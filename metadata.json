@@ -1,0 +1,6 @@
+{
+  "name": "NovaSphere Web",
+  "description": "A modern website featuring an interactive homepage, responsive navigation, authentication, and registration.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
