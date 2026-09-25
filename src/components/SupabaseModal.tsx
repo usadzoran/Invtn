@@ -26,7 +26,13 @@ export const SupabaseModal: React.FC<SupabaseModalProps> = ({ isOpen, onClose })
   if (!isOpen) return null;
 
   const handleCopySql = () => {
-    navigator.clipboard.writeText(supabaseSql);
+    try {
+      if (typeof navigator !== 'undefined' && navigator.clipboard?.writeText) {
+        navigator.clipboard.writeText(supabaseSql).catch(() => {});
+      }
+    } catch {
+      // ignore clipboard error
+    }
     setCopied(true);
     setTimeout(() => setCopied(false), 2500);
   };

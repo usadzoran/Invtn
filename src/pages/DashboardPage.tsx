@@ -96,7 +96,13 @@ export const DashboardPage: React.FC = () => {
 
   const handleCopyUid = () => {
     if (!currentUser?.id) return;
-    navigator.clipboard.writeText(currentUser.id);
+    try {
+      if (typeof navigator !== 'undefined' && navigator.clipboard?.writeText) {
+        navigator.clipboard.writeText(currentUser.id).catch(() => {});
+      }
+    } catch {
+      // ignore
+    }
     setCopiedUid(true);
     setTimeout(() => setCopiedUid(false), 2000);
   };
