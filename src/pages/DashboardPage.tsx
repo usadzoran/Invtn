@@ -32,6 +32,7 @@ export const DashboardPage: React.FC = () => {
     updateProfile,
     refreshProfile,
     supabaseStatus,
+    setSupabaseModalOpen,
     testSupabaseConnection,
     t,
   } = useAuth();
@@ -597,10 +598,7 @@ export const DashboardPage: React.FC = () => {
                 <div className="pt-2">
                   <button
                     type="button"
-                    onClick={() => {
-                      const btn = document.querySelector('header button[title*="Supabase"]') as HTMLButtonElement;
-                      btn?.click();
-                    }}
+                    onClick={() => setSupabaseModalOpen(true)}
                     className="w-full py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-lg text-xs font-semibold transition-colors flex items-center justify-center gap-1.5"
                   >
                     <Settings className="w-3.5 h-3.5 text-slate-600" />
@@ -832,10 +830,7 @@ export const DashboardPage: React.FC = () => {
               </h3>
               <div className="space-y-2">
                 <button
-                  onClick={() => {
-                    const btn = document.querySelector('header button[title*="Supabase"]') as HTMLButtonElement;
-                    btn?.click();
-                  }}
+                  onClick={() => setSupabaseModalOpen(true)}
                   className="w-full py-2.5 px-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-semibold transition-colors flex items-center justify-center gap-2"
                 >
                   <Database className="w-4 h-4" />

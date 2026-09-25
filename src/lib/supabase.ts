@@ -1,21 +1,39 @@
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+const rawUrl = typeof import.meta !== 'undefined' && import.meta.env ? import.meta.env.VITE_SUPABASE_URL : undefined;
+const rawAnonKey = typeof import.meta !== 'undefined' && import.meta.env ? import.meta.env.VITE_SUPABASE_ANON_KEY : undefined;
 
 export const isSupabaseConfigured = (): boolean => {
-  return Boolean(
-    supabaseUrl &&
-    supabaseAnonKey &&
-    supabaseUrl !== 'https://your-project-ref.supabase.co' &&
-    supabaseAnonKey !== 'your-anon-public-key' &&
-    supabaseUrl.startsWith('https://')
-  );
+  try {
+    if (!rawUrl || !rawAnonKey) return false;
+    if (rawUrl === 'https://your-project-ref.supabase.co' || rawAnonKey === 'your-anon-public-key') return false;
+    if (!rawUrl.startsWith('https://')) return false;
+    // Basic valid URL test
+    new URL(rawUrl);
+    return rawAnonKey.length > 20;
+  } catch {
+    return false;
+  }
 };
 
-export const supabase: SupabaseClient | null = isSupabaseConfigured()
-  ? createClient(supabaseUrl!, supabaseAnonKey!)
-  : null;
+let clientInstance: SupabaseClient | null = null;
+
+try {
+  if (isSupabaseConfigured() && rawUrl && rawAnonKey) {
+    clientInstance = createClient(rawUrl, rawAnonKey, {
+      auth: {
+        persistSession: true,
+        autoRefreshToken: true,
+        detectSessionInUrl: true,
+      },
+    });
+  }
+} catch (err) {
+  console.warn('Supabase initialization caught gracefully:', err);
+  clientInstance = null;
+}
+
+export const supabase: SupabaseClient | null = clientInstance;
 
 export const SUPABASE_SQL_SCHEMA = `-- 1. جدول الملفات الشخصية (Profiles Table)
 create table if not exists public.profiles (

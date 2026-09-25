@@ -14,10 +14,20 @@ import {
 } from 'lucide-react';
 
 export const Navbar: React.FC = () => {
-  const { currentUser, language, setLanguage, currentPage, navigateTo, logout, supabaseStatus, t } = useAuth();
+  const {
+    currentUser,
+    language,
+    setLanguage,
+    currentPage,
+    navigateTo,
+    logout,
+    supabaseStatus,
+    supabaseModalOpen,
+    setSupabaseModalOpen,
+    t,
+  } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
-  const [supabaseModalOpen, setSupabaseModalOpen] = useState(false);
 
   const toggleLanguage = () => {
     setLanguage(language === 'ar' ? 'en' : 'ar');
@@ -39,6 +49,22 @@ export const Navbar: React.FC = () => {
 
   return (
     <>
+      {/* Official Website Announcement Bar */}
+      <div className="bg-slate-900 text-slate-300 text-[11px] sm:text-xs py-1.5 px-4 border-b border-slate-800 text-center flex items-center justify-center gap-2 font-medium">
+        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse shrink-0" />
+        <span className="truncate">
+          {language === 'ar'
+            ? 'الموقع الإلكتروني الرسمي لمنصة نوفا سفير — الجيل الجديد لخدمات الويب وقواعد البيانات السحابية'
+            : 'Official Website of NovaSphere — Next-Generation Web Architecture & Cloud Database'}
+        </span>
+        <button
+          onClick={() => handleNavClick('home', 'features')}
+          className="text-indigo-400 hover:text-indigo-300 font-bold underline shrink-0 ms-1"
+        >
+          {language === 'ar' ? 'استكشف المميزات' : 'Explore'}
+        </button>
+      </div>
+
       <header className="sticky top-0 z-50 w-full bg-white/95 backdrop-blur-md border-b border-slate-200/80 transition-colors">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
           

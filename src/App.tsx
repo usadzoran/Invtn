@@ -1,5 +1,6 @@
 import React from 'react';
 import { AuthProvider, useAuth } from './context/AuthContext';
+import { ErrorBoundary } from './components/ErrorBoundary';
 import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
 import { HomePage } from './pages/HomePage';
@@ -10,15 +11,26 @@ import { DashboardPage } from './pages/DashboardPage';
 const AppContent: React.FC = () => {
   const { currentPage } = useAuth();
 
+  const renderCurrentPage = () => {
+    switch (currentPage) {
+      case 'login':
+        return <LoginPage />;
+      case 'register':
+        return <RegisterPage />;
+      case 'dashboard':
+        return <DashboardPage />;
+      case 'home':
+      default:
+        return <HomePage />;
+    }
+  };
+
   return (
-    <div className="min-h-screen flex flex-col bg-slate-50 text-slate-900 transition-colors">
+    <div className="min-h-screen flex flex-col bg-slate-50 text-slate-900 transition-colors selection:bg-indigo-500 selection:text-white">
       <Navbar />
       
-      <main className="flex-1">
-        {currentPage === 'home' && <HomePage />}
-        {currentPage === 'login' && <LoginPage />}
-        {currentPage === 'register' && <RegisterPage />}
-        {currentPage === 'dashboard' && <DashboardPage />}
+      <main className="flex-1 w-full">
+        {renderCurrentPage()}
       </main>
 
       <Footer />
@@ -28,8 +40,10 @@ const AppContent: React.FC = () => {
 
 export default function App() {
   return (
-    <AuthProvider>
-      <AppContent />
-    </AuthProvider>
+    <ErrorBoundary>
+      <AuthProvider>
+        <AppContent />
+      </AuthProvider>
+    </ErrorBoundary>
   );
 }

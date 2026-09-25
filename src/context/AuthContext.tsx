@@ -2,6 +2,7 @@ import React, { createContext, useContext, useState, useEffect, type ReactNode }
 import type { User, Language, Page } from '../types';
 import { translations } from '../translations';
 import { supabase, isSupabaseConfigured, SUPABASE_SQL_SCHEMA } from '../lib/supabase';
+import { safeStorage } from '../lib/safeStorage';
 
 interface StoredAccount {
   user: User;
@@ -21,6 +22,8 @@ interface AuthContextType {
   currentPage: Page;
   supabaseStatus: SupabaseStatus;
   supabaseSql: string;
+  supabaseModalOpen: boolean;
+  setSupabaseModalOpen: (open: boolean) => void;
   setLanguage: (lang: Language) => void;
   navigateTo: (page: Page, anchor?: string) => void;
   login: (email: string, password: string, remember: boolean) => Promise<{ success: boolean; error?: string }>;
@@ -54,32 +57,44 @@ const SEED_USERS: StoredAccount[] = [
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [language, setLanguageState] = useState<Language>(() => {
-    const saved = localStorage.getItem('novasphere_lang');
-    return (saved === 'en' || saved === 'ar') ? saved : 'ar';
+    try {
+      const saved = safeStorage.getItem('novasphere_lang');
+      return (saved === 'en' || saved === 'ar') ? saved : 'ar';
+    } catch {
+      return 'ar';
+    }
   });
 
   const [currentPage, setCurrentPage] = useState<Page>(() => {
-    const hash = window.location.hash.replace('#', '') as Page;
-    if (['home', 'login', 'register', 'dashboard'].includes(hash)) {
-      return hash;
+    try {
+      if (typeof window !== 'undefined' && window.location.hash) {
+        const hash = window.location.hash.replace('#', '') as Page;
+        if (['home', 'login', 'register', 'dashboard'].includes(hash)) {
+          return hash;
+        }
+      }
+    } catch {
+      // ignore
     }
     return 'home';
   });
 
   const [currentUser, setCurrentUser] = useState<User | null>(() => {
     try {
-      const savedUser = localStorage.getItem('novasphere_session_user');
+      const savedUser = safeStorage.getItem('novasphere_session_user');
       return savedUser ? JSON.parse(savedUser) : null;
     } catch {
       return null;
     }
   });
 
-  const [supabaseStatus, setSupabaseStatus] = useState<SupabaseStatus>({
+  const [supabaseStatus, setSupabaseStatus] = useState<SupabaseStatus>(() => ({
     isConfigured: isSupabaseConfigured(),
     isConnected: false,
     testing: false,
-  });
+  }));
+
+  const [supabaseModalOpen, setSupabaseModalOpen] = useState(false);
 
   // Test Supabase Connection
   const testSupabaseConnection = async () => {
@@ -126,64 +141,86 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     if (isSupabaseConfigured() && client) {
       testSupabaseConnection();
 
-      // Listen to Supabase Auth changes
-      const { data: { subscription } } = client.auth.onAuthStateChange(async (event, session) => {
-        if (session?.user) {
-          const supaUser = session.user;
-          // Fetch profile details
-          const { data: profile } = await client
-            .from('profiles')
-            .select('*')
-            .eq('id', supaUser.id)
-            .single();
+      try {
+        const { data: { subscription } } = client.auth.onAuthStateChange(async (event, session) => {
+          if (session?.user) {
+            const supaUser = session.user;
+            try {
+              const { data: profile } = await client
+                .from('profiles')
+                .select('*')
+                .eq('id', supaUser.id)
+                .single();
 
-          const mappedUser: User = {
-            id: supaUser.id,
-            name: profile?.full_name || supaUser.user_metadata?.full_name || supaUser.email?.split('@')[0] || 'User',
-            email: supaUser.email || '',
-            role: profile?.role || 'Member',
-            company: profile?.company || '',
-            bio: profile?.bio || '',
-            createdAt: profile?.created_at?.substring(0, 10) || new Date().toISOString().substring(0, 10),
-            lastLogin: new Date().toISOString().replace('T', ' ').substring(0, 16)
-          };
-          setCurrentUser(mappedUser);
-          localStorage.setItem('novasphere_session_user', JSON.stringify(mappedUser));
-        } else if (event === 'SIGNED_OUT') {
-          setCurrentUser(null);
-          localStorage.removeItem('novasphere_session_user');
-        }
-      });
+              const mappedUser: User = {
+                id: supaUser.id,
+                name: profile?.full_name || supaUser.user_metadata?.full_name || supaUser.email?.split('@')[0] || 'User',
+                email: supaUser.email || '',
+                role: profile?.role || 'Member',
+                company: profile?.company || '',
+                bio: profile?.bio || '',
+                createdAt: profile?.created_at?.substring(0, 10) || new Date().toISOString().substring(0, 10),
+                lastLogin: new Date().toISOString().replace('T', ' ').substring(0, 16)
+              };
+              setCurrentUser(mappedUser);
+              safeStorage.setItem('novasphere_session_user', JSON.stringify(mappedUser));
+            } catch (fetchErr) {
+              console.warn('Could not fetch Supabase profile:', fetchErr);
+            }
+          } else if (event === 'SIGNED_OUT') {
+            setCurrentUser(null);
+            safeStorage.removeItem('novasphere_session_user');
+          }
+        });
 
-      return () => {
-        subscription.unsubscribe();
-      };
+        return () => {
+          subscription.unsubscribe();
+        };
+      } catch (authErr) {
+        console.warn('Supabase auth state listener error:', authErr);
+      }
     } else {
       // Ensure local accounts storage is initialized for offline/local simulation
-      const existing = localStorage.getItem('novasphere_accounts');
-      if (!existing) {
-        localStorage.setItem('novasphere_accounts', JSON.stringify(SEED_USERS));
+      try {
+        const existing = safeStorage.getItem('novasphere_accounts');
+        if (!existing) {
+          safeStorage.setItem('novasphere_accounts', JSON.stringify(SEED_USERS));
+        }
+      } catch {
+        // ignore
       }
     }
   }, []);
 
   // Update HTML tag attributes on language change
   useEffect(() => {
-    localStorage.setItem('novasphere_lang', language);
-    document.documentElement.lang = language;
-    document.documentElement.dir = language === 'ar' ? 'rtl' : 'ltr';
+    try {
+      safeStorage.setItem('novasphere_lang', language);
+      if (typeof document !== 'undefined') {
+        document.documentElement.lang = language;
+        document.documentElement.dir = language === 'ar' ? 'rtl' : 'ltr';
+      }
+    } catch {
+      // ignore
+    }
   }, [language]);
 
   // Sync hash with current page
   useEffect(() => {
     const handleHashChange = () => {
-      const hash = window.location.hash.replace('#', '') as Page;
-      if (['home', 'login', 'register', 'dashboard'].includes(hash)) {
-        setCurrentPage(hash);
+      try {
+        const hash = window.location.hash.replace('#', '') as Page;
+        if (['home', 'login', 'register', 'dashboard'].includes(hash)) {
+          setCurrentPage(hash);
+        }
+      } catch {
+        // ignore
       }
     };
-    window.addEventListener('hashchange', handleHashChange);
-    return () => window.removeEventListener('hashchange', handleHashChange);
+    if (typeof window !== 'undefined') {
+      window.addEventListener('hashchange', handleHashChange);
+      return () => window.removeEventListener('hashchange', handleHashChange);
+    }
   }, []);
 
   const setLanguage = (lang: Language) => {
@@ -192,22 +229,28 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   const navigateTo = (page: Page, anchor?: string) => {
     setCurrentPage(page);
-    window.location.hash = page;
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    try {
+      if (typeof window !== 'undefined') {
+        window.location.hash = page;
+        window.scrollTo({ top: 0, behavior: 'smooth' });
 
-    if (anchor && page === 'home') {
-      setTimeout(() => {
-        const el = document.getElementById(anchor);
-        if (el) {
-          el.scrollIntoView({ behavior: 'smooth' });
+        if (anchor && page === 'home') {
+          setTimeout(() => {
+            const el = document.getElementById(anchor);
+            if (el) {
+              el.scrollIntoView({ behavior: 'smooth' });
+            }
+          }, 100);
         }
-      }, 100);
+      }
+    } catch {
+      // ignore
     }
   };
 
   const getStoredAccounts = (): StoredAccount[] => {
     try {
-      const raw = localStorage.getItem('novasphere_accounts');
+      const raw = safeStorage.getItem('novasphere_accounts');
       return raw ? JSON.parse(raw) : SEED_USERS;
     } catch {
       return SEED_USERS;
@@ -215,7 +258,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   };
 
   const login = async (email: string, password: string, remember: boolean): Promise<{ success: boolean; error?: string }> => {
-    // If Supabase is configured, authenticate via Supabase
     if (isSupabaseConfigured() && supabase) {
       try {
         const { data, error } = await supabase.auth.signInWithPassword({
@@ -247,9 +289,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
           setCurrentUser(activeUser);
           if (remember) {
-            localStorage.setItem('novasphere_session_user', JSON.stringify(activeUser));
-          } else {
-            sessionStorage.setItem('novasphere_session_user', JSON.stringify(activeUser));
+            safeStorage.setItem('novasphere_session_user', JSON.stringify(activeUser));
           }
           return { success: true };
         }
@@ -279,16 +319,13 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
     setCurrentUser(updatedUser);
     if (remember) {
-      localStorage.setItem('novasphere_session_user', JSON.stringify(updatedUser));
-    } else {
-      sessionStorage.setItem('novasphere_session_user', JSON.stringify(updatedUser));
+      safeStorage.setItem('novasphere_session_user', JSON.stringify(updatedUser));
     }
 
     return { success: true };
   };
 
   const register = async (name: string, email: string, password: string): Promise<{ success: boolean; error?: string }> => {
-    // If Supabase is configured, create user in Supabase
     if (isSupabaseConfigured() && supabase) {
       try {
         const { data, error } = await supabase.auth.signUp({
@@ -306,7 +343,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         }
 
         if (data.user) {
-          // Attempt upsert profile record
           try {
             await supabase.from('profiles').upsert({
               id: data.user.id,
@@ -330,7 +366,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
           };
 
           setCurrentUser(newUser);
-          localStorage.setItem('novasphere_session_user', JSON.stringify(newUser));
+          safeStorage.setItem('novasphere_session_user', JSON.stringify(newUser));
           return { success: true };
         }
       } catch (err: any) {
@@ -364,8 +400,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     };
 
     const newAccounts = [...accounts, { user: newUser, passwordHash: password }];
-    localStorage.setItem('novasphere_accounts', JSON.stringify(newAccounts));
-    localStorage.setItem('novasphere_session_user', JSON.stringify(newUser));
+    safeStorage.setItem('novasphere_accounts', JSON.stringify(newAccounts));
+    safeStorage.setItem('novasphere_session_user', JSON.stringify(newUser));
     setCurrentUser(newUser);
 
     return { success: true };
@@ -406,7 +442,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     };
 
     setCurrentUser(socialUser);
-    localStorage.setItem('novasphere_session_user', JSON.stringify(socialUser));
+    safeStorage.setItem('novasphere_session_user', JSON.stringify(socialUser));
     return { success: true };
   };
 
@@ -419,8 +455,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       }
     }
     setCurrentUser(null);
-    localStorage.removeItem('novasphere_session_user');
-    sessionStorage.removeItem('novasphere_session_user');
+    safeStorage.removeItem('novasphere_session_user');
     navigateTo('home');
   };
 
@@ -428,7 +463,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     if (!currentUser) return { success: false, error: 'No active session' };
     const updated: User = { ...currentUser, ...data };
     setCurrentUser(updated);
-    localStorage.setItem('novasphere_session_user', JSON.stringify(updated));
+    safeStorage.setItem('novasphere_session_user', JSON.stringify(updated));
 
     // Update in Supabase if configured
     if (isSupabaseConfigured() && supabase) {
@@ -461,7 +496,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       const idx = accounts.findIndex((acc) => acc.user.id === currentUser.id);
       if (idx !== -1) {
         accounts[idx].user = updated;
-        localStorage.setItem('novasphere_accounts', JSON.stringify(accounts));
+        safeStorage.setItem('novasphere_accounts', JSON.stringify(accounts));
       }
       return { success: true };
     }
@@ -489,7 +524,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
             bio: data.bio !== undefined ? data.bio : currentUser.bio,
           };
           setCurrentUser(refreshed);
-          localStorage.setItem('novasphere_session_user', JSON.stringify(refreshed));
+          safeStorage.setItem('novasphere_session_user', JSON.stringify(refreshed));
           return { success: true };
         }
       } catch (err: any) {
@@ -511,6 +546,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         currentPage,
         supabaseStatus,
         supabaseSql: SUPABASE_SQL_SCHEMA,
+        supabaseModalOpen,
+        setSupabaseModalOpen,
         setLanguage,
         navigateTo,
         login,
