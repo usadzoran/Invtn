@@ -1,21 +1,1300 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>NovaSphere Web | منصة رقمية متكاملة للويب الحديث</title>
-    <meta name="description" content="A modern website featuring an interactive homepage, responsive navigation, authentication, and registration." />
-    <meta property="og:title" content="NovaSphere Web" />
-    <meta property="og:description" content="A modern website featuring an interactive homepage, responsive navigation, authentication, and registration." />
-    <meta property="og:type" content="website" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  </head>
-  <body class="bg-slate-50 text-slate-900 antialiased selection:bg-indigo-500 selection:text-white transition-colors duration-200">
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
-</html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NovaSphere Web | منصة رقمية متكاملة للويب الحديث</title>
+  <meta name="description" content="A modern website featuring an interactive homepage, responsive navigation, authentication, and registration.">
+  <meta property="og:title" content="NovaSphere Web">
+  <meta property="og:description" content="A modern website featuring an interactive homepage, responsive navigation, authentication, and registration.">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
 
+  <!-- Fonts: Cairo (Arabic) & Plus Jakarta Sans (English) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Relative CSS for GitHub Pages (/Invtn/) -->
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+
+  <!-- Anti-White Screen Global Error Banner -->
+  <div id="system-error-banner" role="alert">
+    تعذر استكمال الاتصال السحابي. يرجى المحاولة لاحقاً.
+  </div>
+
+  <!-- Announcement Bar -->
+  <aside class="announcement-bar">
+    <span class="pulse-dot" aria-hidden="true"></span>
+    <span data-i18n="announcementText">الموقع الرسمي لمنصة نوفا سفير — الجيل الجديد لخدمات الويب وقواعد البيانات السحابية</span>
+    <a href="#features" class="announcement-link" data-i18n="heroCtaExplore">استكشف المميزات</a>
+  </aside>
+
+  <!-- Sticky Site Header -->
+  <header class="site-header">
+    <div class="container">
+      <div class="nav-inner">
+        
+        <!-- Brand Logo -->
+        <a href="#home" class="brand-logo" aria-label="NovaSphere Home">
+          <div class="brand-emblem">
+            <div class="brand-emblem-inner">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="9" stroke="rgba(129,140,248,0.5)" stroke-dasharray="3 3"/>
+                <path d="M12 3a9 9 0 0 1 9 9c0 4.97-4.03 9-9 9" stroke="#ffffff"/>
+                <polygon points="12 2 15 8 9 8" fill="#38bdf8"/>
+                <circle cx="12" cy="12" r="3.5" fill="#818cf8"/>
+                <circle cx="12" cy="12" r="1.5" fill="#ffffff"/>
+              </svg>
+            </div>
+          </div>
+          <div class="brand-text">
+            <span class="brand-name">
+              <span data-i18n="brandName">نوفا سفير</span>
+              <span class="brand-name-dot"></span>
+            </span>
+            <span class="brand-tagline" data-i18n="brandTagline">منصة الويب الحديثة</span>
+          </div>
+        </a>
+
+        <!-- Desktop Navigation Links -->
+        <nav class="nav-links-desktop" aria-label="Main Navigation">
+          <a href="#home" class="nav-link" data-i18n="navHome">الرئيسية</a>
+          <a href="#features" class="nav-link" data-i18n="navFeatures">المميزات</a>
+          <a href="#demo" class="nav-link" data-i18n="navServices">الخدمات</a>
+          <a href="#about" class="nav-link" data-i18n="navAbout">عن المنصة</a>
+          <a href="#faq" class="nav-link" data-i18n="navFaq">الأسئلة الشائعة</a>
+        </nav>
+
+        <!-- Nav Actions Zone -->
+        <div class="nav-actions">
+          
+          <!-- Language Toggle Button -->
+          <button type="button" class="btn-lang" onclick="toggleLanguage()" aria-label="Toggle language">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <line x1="2" y1="12" x2="22" y2="12"/>
+              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+            </svg>
+            <span id="lang-btn-text">EN</span>
+          </button>
+
+          <!-- Guest Actions (Sign In / Sign Up) -->
+          <div id="nav-guest-actions" style="display: flex; align-items: center; gap: 0.5rem;">
+            <a href="#login" class="btn btn-ghost" data-i18n="navSignIn">تسجيل الدخول</a>
+            <a href="#register" class="btn btn-primary" data-i18n="navSignUp">إنشاء حساب</a>
+          </div>
+
+          <!-- Logged In User Dropdown Menu -->
+          <div id="nav-user-menu" class="user-menu-wrapper" style="display: none;">
+            <button type="button" id="user-menu-btn" class="user-badge-btn" aria-haspopup="true">
+              <span id="nav-user-avatar" class="user-avatar-circle">U</span>
+              <span id="nav-user-name" class="user-badge-name">User</span>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="6 9 12 15 18 9"/>
+              </svg>
+            </button>
+
+            <div id="user-dropdown" class="dropdown-menu">
+              <div class="dropdown-header">
+                <p id="dropdown-user-name" class="dropdown-header-name">User</p>
+                <p id="dropdown-user-email" class="dropdown-header-email">user@example.com</p>
+              </div>
+              <a href="#dashboard" class="dropdown-item">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="3" width="7" height="9"/>
+                  <rect x="14" y="3" width="7" height="5"/>
+                  <rect x="14" y="12" width="7" height="9"/>
+                  <rect x="3" y="16" width="7" height="5"/>
+                </svg>
+                <span data-i18n="navDashboard">لوحة التحكم</span>
+              </a>
+              <a href="#dashboard" class="dropdown-item">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                  <circle cx="12" cy="7" r="4"/>
+                </svg>
+                <span data-i18n="editProfile">الملف الشخصي</span>
+              </a>
+              <div style="margin: 0.25rem 0; border-top: 1px solid var(--slate-100);"></div>
+              <button type="button" class="dropdown-item danger" onclick="handleLogout()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                  <polyline points="16 17 21 12 16 7"/>
+                  <line x1="21" y1="12" x2="9" y2="12"/>
+                </svg>
+                <span data-i18n="navLogout">تسجيل الخروج</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Mobile Toggle Button -->
+          <button type="button" id="mobile-menu-toggle" class="mobile-toggle" aria-label="Open Navigation Menu">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="3" y1="12" x2="21" y2="12"/>
+              <line x1="3" y1="6" x2="21" y2="6"/>
+              <line x1="3" y1="18" x2="21" y2="18"/>
+            </svg>
+          </button>
+
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Mobile Drawer -->
+    <div id="mobile-drawer" class="mobile-drawer">
+      <a href="#home" class="mobile-nav-link" data-i18n="navHome">الرئيسية</a>
+      <a href="#features" class="mobile-nav-link" data-i18n="navFeatures">المميزات</a>
+      <a href="#demo" class="mobile-nav-link" data-i18n="navServices">الخدمات</a>
+      <a href="#about" class="mobile-nav-link" data-i18n="navAbout">عن المنصة</a>
+      <a href="#faq" class="mobile-nav-link" data-i18n="navFaq">الأسئلة الشائعة</a>
+      <div class="mobile-actions">
+        <a href="#login" class="btn btn-secondary btn-full" data-i18n="navSignIn">تسجيل الدخول</a>
+        <a href="#register" class="btn btn-primary btn-full" data-i18n="navSignUp">إنشاء حساب</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Views Container -->
+  <main>
+
+    <!-- ==================== 1. HOME VIEW ==================== -->
+    <div id="view-home" class="page-view active">
+      
+      <!-- Hero Section -->
+      <section class="hero-section" id="hero">
+        <div class="container">
+          <div class="hero-content">
+            
+            <div class="hero-kicker">
+              <span class="pulse-dot"></span>
+              <span data-i18n="heroBadge">الجيل الجديد لحلول الويب 2026</span>
+              <span>·</span>
+              <span style="color: var(--slate-500); font-weight: normal;">v2.4 Production</span>
+            </div>
+
+            <h1 class="hero-title" data-i18n="heroTitle">
+              بوابتك الرقمية المتكاملة نحو المستقبل الإلكتروني
+            </h1>
+
+            <p class="hero-subtitle" data-i18n="heroSubtitle">
+              موقع ويب متطور يجمع بين السرعة الفائقة، الأمان العالي، وسهولة إدارة البيانات بتصميم عصري وتجربة مستخدم استثنائية.
+            </p>
+
+            <div class="hero-buttons">
+              <a href="#register" class="btn btn-primary btn-lg">
+                <span data-i18n="heroCtaStart">ابدأ الآن مجاناً</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="19" y1="12" x2="5" y2="12"/>
+                  <polyline points="12 19 5 12 12 5"/>
+                </svg>
+              </a>
+              <a href="#login" class="btn btn-secondary btn-lg" data-i18n="heroCtaLogin">تسجيل الدخول</a>
+              <a href="#demo" class="btn btn-ghost btn-lg" data-i18n="heroCtaExplore">استكشف المنصة ↓</a>
+            </div>
+
+            <div class="hero-trust">
+              <span class="trust-item">
+                <svg class="trust-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                <span>تسجيل مجاني فوري</span>
+              </span>
+              <span>·</span>
+              <span class="trust-item">
+                <svg class="trust-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                <span>بدون بطاقة دفع</span>
+              </span>
+              <span>·</span>
+              <span class="trust-item">
+                <svg class="trust-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                <span>أمان بنكي مشفر</span>
+              </span>
+            </div>
+
+          </div>
+
+          <!-- Interactive Hero Showcase Viewport -->
+          <div class="hero-viewport">
+            <div class="viewport-bar">
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <div class="traffic-dots">
+                  <span class="dot-red"></span>
+                  <span class="dot-yellow"></span>
+                  <span class="dot-green"></span>
+                </div>
+                <span style="font-family: monospace; font-size: 0.6875rem; color: var(--slate-500); margin-inline-start: 0.5rem;">novasphere.cloud/portal</span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 0.35rem; color: var(--emerald-500); font-size: 0.6875rem;">
+                <span class="pulse-dot"></span>
+                <span>Operational</span>
+              </div>
+            </div>
+
+            <div class="viewport-card">
+              <div class="viewport-head">
+                <div>
+                  <h3 style="font-size: 1rem; font-weight: 700;">مركز التحكم في الحساب والمشاريع</h3>
+                  <p style="font-size: 0.75rem; color: var(--slate-400);">استعراض مباشر لواجهات إدارة الهوية والوصول والبيانات الحية</p>
+                </div>
+                <div class="tab-btn-group">
+                  <button type="button" class="tab-switch active" data-tab="overview">نظرة عامة</button>
+                  <button type="button" class="tab-switch" data-tab="security">مركز الأمان</button>
+                  <button type="button" class="tab-switch" data-tab="activity">سجل النشاط</button>
+                </div>
+              </div>
+
+              <!-- Tab 1: Overview -->
+              <div id="tab-overview" class="tab-panel active">
+                <div class="stats-grid-3">
+                  <div class="stat-box">
+                    <p style="font-size: 0.75rem; color: var(--slate-400);">جاهزية وثبات السيرفرات</p>
+                    <p class="stat-box-num" style="color: var(--emerald-500);">99.992%</p>
+                    <span style="font-size: 0.65rem; color: var(--slate-500);">Zero downtime incident</span>
+                  </div>
+                  <div class="stat-box">
+                    <p style="font-size: 0.75rem; color: var(--slate-400);">متوسط سرعة الاستجابة</p>
+                    <p class="stat-box-num" style="color: #38bdf8;">11.4 ms</p>
+                    <span style="font-size: 0.65rem; color: var(--slate-500);">Global median roundtrip</span>
+                  </div>
+                  <div class="stat-box">
+                    <p style="font-size: 0.75rem; color: var(--slate-400);">المستخدمين النشطين</p>
+                    <p class="stat-box-num" style="color: #818cf8;">54,230+</p>
+                    <span style="font-size: 0.65rem; color: var(--slate-500);">Verified accounts</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Tab 2: Security -->
+              <div id="tab-security" class="tab-panel">
+                <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                  <div style="display: flex; align-items: center; justify-content: space-between; padding: 0.75rem 1rem; background-color: rgba(30,41,59,0.7); border: 1px solid var(--slate-800); border-radius: var(--radius-lg);">
+                    <div>
+                      <p style="font-size: 0.8125rem; font-weight: 700;">التحقق بخطوتين (2-Factor Authentication)</p>
+                      <p style="font-size: 0.6875rem; color: var(--slate-400);">حماية إضافية لكافة جلسات تسجيل الدخول</p>
+                    </div>
+                    <button type="button" id="twofa-toggle-btn" class="btn btn-primary" style="padding: 0.35rem 0.85rem; font-size: 0.75rem;" data-enabled="true">مفعّل ✓</button>
+                  </div>
+                  <div style="display: flex; align-items: center; justify-content: space-between; padding: 0.75rem 1rem; background-color: rgba(30,41,59,0.7); border: 1px solid var(--slate-800); border-radius: var(--radius-lg);">
+                    <div>
+                      <p style="font-size: 0.8125rem; font-weight: 700;">تشفير الجلسات وحماية الهوية</p>
+                      <p style="font-size: 0.6875rem; color: var(--slate-400);">تطبيق بروتوكولات التشفير TLS 1.3 مع مفاتيح أمان غير قابلة للاختراق</p>
+                    </div>
+                    <span style="font-size: 0.75rem; font-family: monospace; color: var(--emerald-500);">Active & Audited</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Tab 3: Activity -->
+              <div id="tab-activity" class="tab-panel">
+                <div style="display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.75rem;">
+                  <div style="display: flex; align-items: center; justify-content: space-between; padding: 0.65rem 0.85rem; background-color: rgba(30,41,59,0.5); border-radius: var(--radius-md); border: 1px solid var(--slate-800);">
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                      <span class="pulse-dot"></span>
+                      <span>Session initialized & token verified</span>
+                    </div>
+                    <span style="color: var(--slate-500); font-family: monospace;">Just now</span>
+                  </div>
+                  <div style="display: flex; align-items: center; justify-content: space-between; padding: 0.65rem 0.85rem; background-color: rgba(30,41,59,0.5); border-radius: var(--radius-md); border: 1px solid var(--slate-800);">
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                      <span style="width:6px; height:6px; border-radius:999px; background:#38bdf8;"></span>
+                      <span>Profile data synchronized</span>
+                    </div>
+                    <span style="color: var(--slate-500); font-family: monospace;">2 mins ago</span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- Key Metrics Bar -->
+      <section class="metrics-bar">
+        <div class="container">
+          <div class="metrics-grid">
+            <div>
+              <p class="metric-big-num" style="color: var(--primary-600);" data-i18n="statUptime">99.99%</p>
+              <p class="metric-caption" data-i18n="statUptimeLabel">جاهزية وثبات السيرفرات</p>
+            </div>
+            <div>
+              <p class="metric-big-num" data-i18n="statUsers">+50,000</p>
+              <p class="metric-caption" data-i18n="statUsersLabel">مستخدم نشط حول العالم</p>
+            </div>
+            <div>
+              <p class="metric-big-num" data-i18n="statLatency">&lt;15ms</p>
+              <p class="metric-caption" data-i18n="statLatencyLabel">زمن استجابة فائق السرعة</p>
+            </div>
+            <div>
+              <p class="metric-big-num" style="color: var(--emerald-600);" data-i18n="statSecurity">100%</p>
+              <p class="metric-caption" data-i18n="statSecurityLabel">تشفير بيانات متقدم</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Features Section -->
+      <section class="features-section" id="features">
+        <div class="container">
+          
+          <div class="section-head">
+            <h2 class="section-title" data-i18n="featuresHeading">مميزات حصرية صممت لنجاحك</h2>
+            <p class="section-desc" data-i18n="featuresSubheading">
+              تقنيات متقدمة تمنحك القوة والمرونة لإدارة عملك وحسابك بكل موثوقية وأمان.
+            </p>
+          </div>
+
+          <div class="features-grid">
+            <!-- 1. Speed -->
+            <div class="feature-card">
+              <div>
+                <div class="feature-icon-wrapper">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+                  </svg>
+                </div>
+                <h3 class="feature-card-title">أداء فائق السرعة</h3>
+                <p class="feature-card-desc">
+                  بنية تحتية موزعة عالمياً تضمن تحميل صفحات الموقع في أجزاء من الثانية دون أي تأخير.
+                </p>
+              </div>
+              <div class="feature-meta">
+                <span style="color: var(--slate-500);">متوسط سرعة الاستجابة</span>
+                <span class="feature-metric">&lt; 12ms</span>
+              </div>
+            </div>
+
+            <!-- 2. Security -->
+            <div class="feature-card">
+              <div>
+                <div class="feature-icon-wrapper">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                  </svg>
+                </div>
+                <h3 class="feature-card-title">حماية وتشفير متكامل</h3>
+                <p class="feature-card-desc">
+                  طبقات أمان صارمة لحماية حسابك وبياناتك الشخصية بأعلى معايير التشفير القياسية.
+                </p>
+              </div>
+              <div class="feature-meta">
+                <span style="color: var(--slate-500);">تشفير شامل للبيانات</span>
+                <span class="feature-metric">AES-256</span>
+              </div>
+            </div>
+
+            <!-- 3. Responsive -->
+            <div class="feature-card">
+              <div>
+                <div class="feature-icon-wrapper">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+                    <line x1="8" y1="21" x2="16" y2="21"/>
+                    <line x1="12" y1="17" x2="12" y2="21"/>
+                  </svg>
+                </div>
+                <h3 class="feature-card-title">واجهة تفاعلية ذكية</h3>
+                <p class="feature-card-desc">
+                  تصميم تجاوبي متوافق مع كافة أحجام الشاشات من الحواسيب المكتبية حتى الأجهزة اللوحية والهواتف.
+                </p>
+              </div>
+              <div class="feature-meta">
+                <span style="color: var(--slate-500);">توافق كامل مع الشاشات</span>
+                <span class="feature-metric">100%</span>
+              </div>
+            </div>
+
+            <!-- 4. Real-time -->
+            <div class="feature-card">
+              <div>
+                <div class="feature-icon-wrapper">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+                  </svg>
+                </div>
+                <h3 class="feature-card-title">لوحة تحكم فورية</h3>
+                <p class="feature-card-desc">
+                  متابعة نشاط حسابك وإدارة ملفك الشخصي وإعداداتك بسهولة تامة من مكان واحد.
+                </p>
+              </div>
+              <div class="feature-meta">
+                <span style="color: var(--slate-500);">مزامنة فورية للنشاط</span>
+                <span class="feature-metric">Real-time</span>
+              </div>
+            </div>
+
+            <!-- 5. Bilingual -->
+            <div class="feature-card">
+              <div>
+                <div class="feature-icon-wrapper">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"/>
+                    <line x1="2" y1="12" x2="22" y2="12"/>
+                    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                  </svg>
+                </div>
+                <h3 class="feature-card-title">دعم متعدد اللغات</h3>
+                <p class="feature-card-desc">
+                  دعم كامل للغة العربية باتجاه RTL واللغة الإنجليزية بكل سلاسة وانسيابية بنقرة واحدة.
+                </p>
+              </div>
+              <div class="feature-meta">
+                <span style="color: var(--slate-500);">دعم كامل للغتين</span>
+                <span class="feature-metric">RTL + LTR</span>
+              </div>
+            </div>
+
+            <!-- 6. Support -->
+            <div class="feature-card">
+              <div>
+                <div class="feature-icon-wrapper">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                  </svg>
+                </div>
+                <h3 class="feature-card-title">دعم فني متواصل 24/7</h3>
+                <p class="feature-card-desc">
+                  فريق متخصص متواجد على مدار الساعة لمساعدتك والإجابة عن كافة استفساراتك باحترافية.
+                </p>
+              </div>
+              <div class="feature-meta">
+                <span style="color: var(--slate-500);">جاهزية الدعم والمساعدة</span>
+                <span class="feature-metric">24/7/365</span>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
+      <!-- Interactive Services Demo Section -->
+      <section class="demo-section" id="demo">
+        <div class="container">
+          <div class="demo-grid">
+            
+            <div>
+              <span style="font-size: 0.75rem; font-weight: 700; color: var(--primary-600); text-transform: uppercase;">تجربة تفاعلية مباشرة</span>
+              <h2 style="font-size: 1.875rem; font-weight: 800; margin: 0.5rem 0 1rem; color: var(--slate-900);" data-i18n="demoTitle">
+                تجربة حية للخدمات الرقمية
+              </h2>
+              <p style="font-size: 0.875rem; color: var(--slate-600); line-height: 1.7; margin-bottom: 1.5rem;" data-i18n="demoSubtitle">
+                تفاعل مع الواجهة أدناه لاكتشاف كيفية معالجة البيانات والتحكم في حسابك مباشرة
+              </p>
+
+              <div style="display: flex; flex-direction: column; gap: 0.75rem; font-size: 0.8125rem; color: var(--slate-700); margin-bottom: 2rem;">
+                <div style="display: flex; align-items: flex-start; gap: 0.5rem;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--emerald-600)" stroke-width="2.5" style="flex-shrink:0; margin-top: 2px;"><polyline points="20 6 9 17 4 12"/></svg>
+                  <span>تسجيل دخول فوري وحماية البيانات بكلمة مرور مشفرة</span>
+                </div>
+                <div style="display: flex; align-items: flex-start; gap: 0.5rem;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--emerald-600)" stroke-width="2.5" style="flex-shrink:0; margin-top: 2px;"><polyline points="20 6 9 17 4 12"/></svg>
+                  <span>إمكانية تعديل الملف الشخصي ومتابعة سجل الدخول مباشرة</span>
+                </div>
+                <div style="display: flex; align-items: flex-start; gap: 0.5rem;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--emerald-600)" stroke-width="2.5" style="flex-shrink:0; margin-top: 2px;"><polyline points="20 6 9 17 4 12"/></svg>
+                  <span>مزامنة فورية وتحديث لحظي لبيانات المستخدم</span>
+                </div>
+              </div>
+
+              <div style="display: flex; gap: 0.75rem;">
+                <a href="#register" class="btn btn-primary" data-i18n="heroCtaStart">ابدأ الآن مجاناً</a>
+                <a href="#login" class="btn btn-secondary" data-i18n="heroCtaLogin">تسجيل الدخول</a>
+              </div>
+            </div>
+
+            <!-- Interactive Box -->
+            <div class="interactive-box">
+              <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--slate-200); padding-bottom: 1rem;">
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--primary-600)" stroke-width="2"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"/><rect x="2" y="14" width="20" height="8" rx="2" ry="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg>
+                  <span style="font-size: 0.8125rem; font-weight: 700; color: var(--slate-800);">محاكي الخوادم وتوزيع الحمل</span>
+                </div>
+                <span style="font-size: 0.75rem; font-family: monospace; color: var(--slate-500);">Node: v20.x Edge</span>
+              </div>
+
+              <div class="slider-group">
+                <div class="slider-label-row">
+                  <span>الطلبات المعالجة في الدقيقة</span>
+                  <span id="demo-slider-count" style="font-family: monospace; font-weight: 700; color: var(--primary-600);">14,800 req/min</span>
+                </div>
+                <input type="range" id="demo-request-slider" min="5000" max="50000" step="500" value="14800" class="range-input">
+              </div>
+
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1.25rem;">
+                <div style="background-color: #ffffff; padding: 0.75rem; border-radius: var(--radius-lg); border: 1px solid var(--slate-200);">
+                  <span style="font-size: 0.6875rem; color: var(--slate-500); display: block; margin-bottom: 0.35rem;">المنطقة الجغرافية</span>
+                  <select id="demo-region-select" style="width: 100%; font-size: 0.75rem; padding: 0.35rem; border-radius: var(--radius-sm); border: 1px solid var(--slate-200); background: var(--slate-50);">
+                    <option value="me-central">ME Central (Riyadh / Dubai)</option>
+                    <option value="eu-central">EU Central (Frankfurt)</option>
+                    <option value="us-east">US East (Virginia)</option>
+                  </select>
+                </div>
+                <div style="background-color: #ffffff; padding: 0.75rem; border-radius: var(--radius-lg); border: 1px solid var(--slate-200); display: flex; flex-direction: column; justify-content: space-between;">
+                  <span style="font-size: 0.6875rem; color: var(--slate-500);">زمن المعالجة المتوقع</span>
+                  <span id="demo-latency-val" style="font-size: 1.15rem; font-weight: 800; font-family: monospace; color: var(--emerald-600);">8.2 ms</span>
+                </div>
+              </div>
+
+              <div style="background-color: var(--primary-50); border: 1px solid var(--primary-100); border-radius: var(--radius-lg); padding: 0.75rem 1rem; font-size: 0.75rem; color: var(--primary-900); display: flex; align-items: center; justify-content: space-between;">
+                <span>جاهز للتجربة الفعلية؟ يمكنك إنشاء حسابك والبدء الآن!</span>
+                <a href="#register" style="font-weight: 700; color: var(--primary-700); text-decoration: underline;" data-i18n="navSignUp">إنشاء حساب</a>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- Testimonials Section -->
+      <section class="testimonials-section" id="about">
+        <div class="container">
+          
+          <div class="section-head">
+            <h2 class="section-title" data-i18n="testimonialsTitle">ماذا يقول عملاؤنا عنا</h2>
+            <p class="section-desc" data-i18n="testimonialsSubtitle">
+              قصص نجاح حقيقية لرواد أعمال ومطورين يثقون في منصتنا يومياً.
+            </p>
+          </div>
+
+          <div class="testimonials-grid">
+            
+            <div class="testimonial-card">
+              <div>
+                <div class="stars-row">★★★★★</div>
+                <p class="testimonial-text">
+                  "منصة نوفا سفير غيرت تماماً كيفية إطلاقنا لمواقع الويب التفاعلية. السرعة لا تقارن، والأمان المدمج وفر علينا مئات الساعات من التطوير."
+                </p>
+              </div>
+              <div class="author-row">
+                <div class="author-avatar">م</div>
+                <div>
+                  <p style="font-size: 0.8125rem; font-weight: 700; color: var(--slate-900);">د. مريم المنصوري</p>
+                  <p style="font-size: 0.6875rem; color: var(--slate-500);">مديرة التحول الرقمي · مجموعة التقنية القابضة</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="testimonial-card">
+              <div>
+                <div class="stars-row">★★★★★</div>
+                <p class="testimonial-text">
+                  "بساطة التسجيل وسلاسة التحكم في الحساب تجعل التجربة مريحة لكل زائر. دعم اللغة العربية باحترافية هو ما كنا نبحث عنه بدقة."
+                </p>
+              </div>
+              <div class="author-row">
+                <div class="author-avatar">ط</div>
+                <div>
+                  <p style="font-size: 0.8125rem; font-weight: 700; color: var(--slate-900);">طارق السعيد</p>
+                  <p style="font-size: 0.6875rem; color: var(--slate-500);">كبير مهندسي الواجهات · أفق للبرمجيات</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="testimonial-card">
+              <div>
+                <div class="stars-row">★★★★★</div>
+                <p class="testimonial-text">
+                  "أنشأنا حسابنا في أقل من دقيقة، وبدأنا بالعمل فوراً. التصميم نظيف وعصري ومريح للعين، ويعكس احترافية حقيقية للموقع."
+                </p>
+              </div>
+              <div class="author-row">
+                <div class="author-avatar">س</div>
+                <div>
+                  <p style="font-size: 0.8125rem; font-weight: 700; color: var(--slate-900);">سارة جاسم</p>
+                  <p style="font-size: 0.6875rem; color: var(--slate-500);">مؤسسة مشاريع ناشئة · بيان للاستشارات</p>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
+      <!-- FAQ Accordion Section -->
+      <section class="faq-section" id="faq">
+        <div class="container">
+          
+          <div class="section-head" style="margin-bottom: 2.5rem;">
+            <h2 class="section-title" data-i18n="faqTitle">الأسئلة الشائعة</h2>
+            <p class="section-desc" data-i18n="faqSubtitle">
+              كل ما تحتاج لمعرفته حول التسجيل وإدارة حسابك على المنصة.
+            </p>
+          </div>
+
+          <div class="faq-container">
+            
+            <div class="faq-item open">
+              <button type="button" class="faq-header">
+                <span>كيف يمكنني تسجيل حساب جديد في المنصة؟</span>
+                <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+              </button>
+              <div class="faq-body">
+                يمكنك النقر فوق زر "إنشاء حساب" في أعلى الصفحة وتعبئة اسمك وبريدك الإلكتروني وكلمة المرور في ثوانٍ معدودة مجاناً دون أي تعقيد.
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <button type="button" class="faq-header">
+                <span>هل بياناتي وكلمات المرور الخاصة بي آمنة ومحمية؟</span>
+                <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+              </button>
+              <div class="faq-body">
+                نعم، نحن نطبق أعلى معايير التشفير وحماية البيانات ولا نشارك بياناتك مع أي طرف ثالث بأي شكل من الأشكال.
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <button type="button" class="faq-header">
+                <span>هل يدعم الموقع جميع الأجهزة والمتصفحات؟</span>
+                <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+              </button>
+              <div class="faq-body">
+                بالتأكيد، تم تطوير الموقع ليكون متوافقاً تماماً مع جميع المتصفحات الحديثة، وشاشات الحواسيب، واللوحيات، والهواتف الذكية.
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <button type="button" class="faq-header">
+                <span>هل يتطلب إنشاء الحساب بطاقة ائتمانية؟</span>
+                <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+              </button>
+              <div class="faq-body">
+                كلا، التسجيل والبدء مجاني تماماً دون الحاجة لأي بطاقة دفع أو أي رسوم خفية.
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
+      <!-- Call To Action Banner -->
+      <section class="cta-banner">
+        <div class="container">
+          <div class="cta-inner">
+            <h2 style="font-size: 2rem; font-weight: 800; margin-bottom: 1rem;" data-i18n="ctaTitle">
+              جاهز لبدء تجربتك الرقمية الجديدة اليوم؟
+            </h2>
+            <p style="font-size: 0.9375rem; color: var(--slate-300); margin-bottom: 2rem; line-height: 1.6;" data-i18n="ctaSubtitle">
+              انضم إلى آلاف المستخدمين وابدأ الآن في دقيقة واحدة بخطوات سهلة وبسيطة.
+            </p>
+            <div style="display: flex; justify-content: center; gap: 0.75rem; flex-wrap: wrap;">
+              <a href="#register" class="btn btn-primary btn-lg" data-i18n="ctaButton">أنشئ حسابك المجاني الآن</a>
+              <a href="#login" class="btn btn-secondary btn-lg" style="background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2); color: #ffffff;" data-i18n="heroCtaLogin">تسجيل الدخول</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- ==================== 2. LOGIN VIEW ==================== -->
+    <div id="view-login" class="page-view">
+      <div class="auth-wrapper">
+        <div class="auth-card">
+          
+          <!-- Left Visual Column -->
+          <div class="auth-sidebar">
+            <div>
+              <div class="brand-logo" style="margin-bottom: 2rem;">
+                <div class="brand-emblem">
+                  <div class="brand-emblem-inner">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3.5" fill="#818cf8"/></svg>
+                  </div>
+                </div>
+                <div class="brand-text">
+                  <span class="brand-name" style="color: #ffffff;">نوفا سفير</span>
+                </div>
+              </div>
+
+              <h3 style="font-size: 1.25rem; font-weight: 800; margin-bottom: 0.5rem;">أهلاً بك مجدداً</h3>
+              <p style="font-size: 0.75rem; color: var(--slate-300); line-height: 1.6; margin-bottom: 2rem;">
+                بوابتك الشاملة لإدارة وتطوير خدمات الويب الحديثة بأعلى مستويات الأداء والأمان.
+              </p>
+
+              <div style="display: flex; flex-direction: column; gap: 0.75rem; font-size: 0.75rem; color: var(--slate-300);">
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--emerald-500)" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                  <span>تشفير وحماية البيانات 100%</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--primary-200)" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                  <span>مزامنة فورية للجلسة والملف الشخصي</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                  <span>إمكانية الدخول بحساب تجريبي بنقرة واحدة</span>
+                </div>
+              </div>
+            </div>
+
+            <div style="font-size: 0.6875rem; color: var(--slate-400); padding-top: 2rem; border-top: 1px solid var(--slate-800);">
+              توافق كامل مع معايير الأمان 2026
+            </div>
+          </div>
+
+          <!-- Right Form Column -->
+          <div class="auth-form-area">
+            <div>
+              <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem;">
+                <a href="#home" class="btn btn-ghost" style="padding: 0.25rem 0.5rem; font-size: 0.75rem;">← العودة للرئيسية</a>
+                <button type="button" class="btn btn-secondary" style="padding: 0.35rem 0.65rem; font-size: 0.6875rem;" onclick="handleDemoFill()">⚡ تعبئة بيانات تجريبية</button>
+              </div>
+
+              <h2 style="font-size: 1.5rem; font-weight: 800; color: var(--slate-900); margin-bottom: 0.25rem;" data-i18n="loginTitle">
+                تسجيل الدخول إلى حسابك
+              </h2>
+              <p style="font-size: 0.75rem; color: var(--slate-500); margin-bottom: 1.5rem;" data-i18n="loginSubtitle">
+                أهلاً بك مجدداً! يرجى إدخال بيانات حسابك للمتابعة.
+              </p>
+
+              <!-- Form Alert -->
+              <div id="login-alert" class="alert-box alert-error" style="display: none;"></div>
+
+              <form onsubmit="handleLoginSubmit(event)">
+                <div class="form-group">
+                  <label class="form-label" for="login-email">البريد الإلكتروني</label>
+                  <div class="input-with-icon">
+                    <span class="input-icon-start">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                    </span>
+                    <input type="email" id="login-email" class="form-input" placeholder="name@example.com" required>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">
+                    <label class="form-label" for="login-password" style="margin-bottom: 0;">كلمة المرور</label>
+                    <a href="javascript:void(0)" onclick="openForgotModal()" style="font-size: 0.6875rem; color: var(--primary-600); font-weight: 600;">نسيت كلمة المرور؟</a>
+                  </div>
+                  <div class="input-with-icon">
+                    <span class="input-icon-start">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                    </span>
+                    <input type="password" id="login-password" class="form-input" placeholder="••••••••" required>
+                    <span class="input-icon-end" id="login-pass-toggle" title="Show/Hide">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                    </span>
+                  </div>
+                </div>
+
+                <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1.25rem;">
+                  <input type="checkbox" id="login-remember" checked style="accent-color: var(--primary-600); width: 1rem; height: 1rem;">
+                  <label for="login-remember" style="font-size: 0.75rem; color: var(--slate-600); cursor: pointer;">تذكر تسجيل الدخول</label>
+                </div>
+
+                <button type="submit" id="login-submit-btn" class="btn btn-primary btn-full" style="padding: 0.75rem;">
+                  <span data-i18n="heroCtaLogin">تسجيل الدخول</span>
+                </button>
+              </form>
+            </div>
+
+            <div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--slate-100); text-align: center; font-size: 0.75rem; color: var(--slate-600);">
+              <span>ليس لديك حساب حتى الآن؟</span>
+              <a href="#register" style="color: var(--primary-600); font-weight: 700; text-decoration: underline; margin-inline-start: 0.25rem;">أنشئ حساباً مجاناً</a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== 3. REGISTER VIEW ==================== -->
+    <div id="view-register" class="page-view">
+      <div class="auth-wrapper">
+        <div class="auth-card">
+          
+          <!-- Left Visual Column -->
+          <div class="auth-sidebar">
+            <div>
+              <div class="brand-logo" style="margin-bottom: 2rem;">
+                <div class="brand-emblem">
+                  <div class="brand-emblem-inner">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3.5" fill="#818cf8"/></svg>
+                  </div>
+                </div>
+                <div class="brand-text">
+                  <span class="brand-name" style="color: #ffffff;">نوفا سفير</span>
+                </div>
+              </div>
+
+              <h3 style="font-size: 1.25rem; font-weight: 800; margin-bottom: 0.5rem;">ابدأ خطوتك الرقمية الأولى</h3>
+              <p style="font-size: 0.75rem; color: var(--slate-300); line-height: 1.6; margin-bottom: 2rem;">
+                أنشئ حسابك خلال لحظات واستفد من جميع الأدوات السحابية والخدمات المتقدمة مجاناً وبلا أي قيود.
+              </p>
+
+              <div style="display: flex; flex-direction: column; gap: 0.75rem; font-size: 0.75rem; color: var(--slate-300);">
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--emerald-500)" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                  <span>حساب مجاني بالكامل بدون بطاقة دفع</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--primary-200)" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                  <span>تفعيل فوري مع إمكانية الدخول المباشر</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                  <span>دعم كامل للغة العربية والإنجليزية</span>
+                </div>
+              </div>
+            </div>
+
+            <div style="font-size: 0.6875rem; color: var(--slate-400); padding-top: 2rem; border-top: 1px solid var(--slate-800);">
+              جميع البيانات مشفرة ومحمية بالكامل
+            </div>
+          </div>
+
+          <!-- Right Form Column -->
+          <div class="auth-form-area">
+            <div>
+              <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem;">
+                <a href="#home" class="btn btn-ghost" style="padding: 0.25rem 0.5rem; font-size: 0.75rem;">← العودة للرئيسية</a>
+                <button type="button" class="btn btn-secondary" style="padding: 0.35rem 0.65rem; font-size: 0.6875rem;" onclick="handleQuickRegFill()">⚡ تعبئة سريعة</button>
+              </div>
+
+              <h2 style="font-size: 1.5rem; font-weight: 800; color: var(--slate-900); margin-bottom: 0.25rem;" data-i18n="registerTitle">
+                إنشاء حساب جديد
+              </h2>
+              <p style="font-size: 0.75rem; color: var(--slate-500); margin-bottom: 1.5rem;" data-i18n="registerSubtitle">
+                ابدأ رحلتك معنا اليوم وافتح آفاقاً جديدة لمشاريعك وأعمالك.
+              </p>
+
+              <!-- Form Alert -->
+              <div id="reg-alert" class="alert-box alert-error" style="display: none;"></div>
+
+              <form onsubmit="handleRegisterSubmit(event)">
+                <div class="form-group">
+                  <label class="form-label" for="reg-name">الاسم الكامل</label>
+                  <div class="input-with-icon">
+                    <span class="input-icon-start">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                    </span>
+                    <input type="text" id="reg-name" class="form-input" placeholder="محمد عبدالله" required>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="reg-email">البريد الإلكتروني</label>
+                  <div class="input-with-icon">
+                    <span class="input-icon-start">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                    </span>
+                    <input type="email" id="reg-email" class="form-input" placeholder="name@example.com" required>
+                  </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+                  <div class="form-group">
+                    <label class="form-label" for="reg-password">كلمة المرور</label>
+                    <div class="input-with-icon">
+                      <span class="input-icon-start">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                      </span>
+                      <input type="password" id="reg-password" class="form-input" placeholder="••••••••" required>
+                      <span class="input-icon-end" id="reg-pass-toggle" title="Show/Hide">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                      </span>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label" for="reg-confirm">تأكيد كلمة المرور</label>
+                    <div class="input-with-icon">
+                      <span class="input-icon-start">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                      </span>
+                      <input type="password" id="reg-confirm" class="form-input" placeholder="••••••••" required>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Password Strength Meter -->
+                <div class="password-meter-wrap" style="margin-bottom: 1rem;">
+                  <div style="display: flex; justify-content: space-between; font-size: 0.6875rem; color: var(--slate-500);">
+                    <span>قوة كلمة المرور:</span>
+                    <span id="password-strength-label" style="font-weight: 700; color: var(--slate-700);">أدخل كلمة المرور</span>
+                  </div>
+                  <div class="meter-track">
+                    <div id="password-strength-bar" class="meter-bar"></div>
+                  </div>
+                </div>
+
+                <div style="display: flex; align-items: flex-start; gap: 0.5rem; margin-bottom: 1.25rem;">
+                  <input type="checkbox" id="reg-terms" checked style="accent-color: var(--primary-600); width: 1rem; height: 1rem; margin-top: 0.15rem;">
+                  <label for="reg-terms" style="font-size: 0.75rem; color: var(--slate-600); cursor: pointer; line-height: 1.5;">
+                    أوافق على شروط الاستخدام وسياسة الخصوصية للمنصة
+                  </label>
+                </div>
+
+                <button type="submit" id="reg-submit-btn" class="btn btn-primary btn-full" style="padding: 0.75rem;">
+                  <span data-i18n="navSignUp">إنشاء الحساب</span>
+                </button>
+              </form>
+            </div>
+
+            <div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--slate-100); text-align: center; font-size: 0.75rem; color: var(--slate-600);">
+              <span>هل لديك حساب بالفعل؟</span>
+              <a href="#login" style="color: var(--primary-600); font-weight: 700; text-decoration: underline; margin-inline-start: 0.25rem;">سجّل دخولك الآن</a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== 4. DASHBOARD VIEW ==================== -->
+    <div id="view-dashboard" class="page-view">
+      <div class="dashboard-wrapper">
+        <div class="container">
+          
+          <!-- Top Header Card -->
+          <div class="dash-header-card">
+            <div style="display: flex; align-items: center; gap: 1rem;">
+              <div id="dash-user-avatar" class="user-avatar-circle" style="width: 3.5rem; height: 3.5rem; font-size: 1.5rem; font-weight: 800; border-radius: var(--radius-xl);">
+                U
+              </div>
+              <div>
+                <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem;">
+                  <h1 id="dash-user-name" style="font-size: 1.35rem; font-weight: 800; color: var(--slate-900);">User</h1>
+                  <span style="font-size: 0.6875rem; font-weight: 700; color: var(--emerald-700); background: var(--emerald-50); border: 1px solid var(--emerald-100); padding: 0.15rem 0.5rem; border-radius: var(--radius-full);">نشط</span>
+                </div>
+                <div style="font-size: 0.75rem; color: var(--slate-500); display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+                  <span id="dash-user-email">user@example.com</span>
+                  <span>·</span>
+                  <span id="dash-user-role" style="font-weight: 600; color: var(--slate-700);">Member</span>
+                </div>
+              </div>
+            </div>
+
+            <div style="display: flex; gap: 0.5rem;">
+              <a href="#home" class="btn btn-secondary" style="font-size: 0.75rem;">← الرئيسية</a>
+              <button type="button" class="btn btn-secondary" style="font-size: 0.75rem; color: var(--rose-600);" onclick="handleLogout()">تسجيل الخروج</button>
+            </div>
+          </div>
+
+          <!-- Tabs Bar -->
+          <div class="dash-tabs-bar">
+            <button type="button" class="dash-tab-btn active" data-dash-tab="profile">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              <span>الملف الشخصي</span>
+            </button>
+            <button type="button" class="dash-tab-btn" data-dash-tab="overview">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
+              <span>نظرة عامة</span>
+            </button>
+            <button type="button" class="dash-tab-btn" data-dash-tab="security">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              <span>مركز الأمان</span>
+            </button>
+          </div>
+
+          <!-- Alert in Dashboard -->
+          <div id="profile-alert" class="alert-box alert-success" style="display: none;"></div>
+
+          <!-- 1. Profile Sub-View -->
+          <div id="dash-view-profile" class="dash-content-grid dash-sub-view">
+            
+            <div class="dash-card">
+              <div class="dash-card-header">
+                <div>
+                  <h3 style="font-size: 1rem; font-weight: 700; color: var(--slate-900);">تعديل الملف الشخصي</h3>
+                  <p style="font-size: 0.75rem; color: var(--slate-500);">تحديث الاسم الظاهر والمسمى المهني وبياناتك الشخصية</p>
+                </div>
+              </div>
+
+              <form onsubmit="handleProfileUpdate(event)">
+                <div class="form-group">
+                  <label class="form-label" for="profile-name">الاسم الظاهر</label>
+                  <input type="text" id="profile-name" class="form-input" required style="padding-inline-start: 1rem;">
+                  <span style="font-size: 0.6875rem; color: var(--slate-400); margin-top: 0.25rem; display: block;">الاسم الذي يظهر للمستخدمين والزوار</span>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+                  <div class="form-group">
+                    <label class="form-label" for="profile-email">البريد الإلكتروني (المصادقة)</label>
+                    <input type="email" id="profile-email" class="form-input" disabled style="background-color: var(--slate-100); color: var(--slate-500); padding-inline-start: 1rem; cursor: not-allowed;">
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label" for="profile-uid">معرف الحساب (UID)</label>
+                    <div style="display: flex; gap: 0.5rem;">
+                      <input type="text" id="profile-uid" class="form-input" readonly style="background-color: var(--slate-100); font-family: monospace; font-size: 0.75rem; padding-inline-start: 0.75rem;">
+                      <button type="button" id="copy-uid-btn" class="btn btn-secondary" onclick="copyUserId()" style="font-size: 0.75rem; padding: 0.35rem 0.75rem;">نسخ</button>
+                    </div>
+                  </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+                  <div class="form-group">
+                    <label class="form-label" for="profile-role">المسمى المهني / الدور</label>
+                    <input type="text" id="profile-role" class="form-input" placeholder="مهندس برمجيات / مطور" style="padding-inline-start: 1rem;">
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label" for="profile-company">المؤسسة / الشركة</label>
+                    <input type="text" id="profile-company" class="form-input" placeholder="اسم الشركة" style="padding-inline-start: 1rem;">
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="profile-bio">نبذة عنك</label>
+                  <textarea id="profile-bio" rows="3" class="form-input" placeholder="اكتب نبذة مختصرة عنك..." style="padding-inline-start: 1rem; resize: none;"></textarea>
+                </div>
+
+                <div style="display: flex; gap: 0.75rem; margin-top: 1rem;">
+                  <button type="submit" id="profile-save-btn" class="btn btn-primary" style="padding: 0.65rem 1.5rem;" data-i18n="saveChanges">
+                    حفظ التعديلات
+                  </button>
+                </div>
+              </form>
+            </div>
+
+            <!-- Profile Live Preview Card -->
+            <div>
+              <div class="dash-card" style="margin-bottom: 1.5rem;">
+                <div class="dash-card-header">
+                  <h4 style="font-size: 0.8125rem; font-weight: 700; color: var(--slate-800);">معاينة هوية المستخدم</h4>
+                  <span style="font-size: 0.6875rem; color: var(--emerald-600); font-weight: 700;">Live</span>
+                </div>
+
+                <div class="user-identity-card">
+                  <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
+                    <div id="prev-avatar" class="user-avatar-circle" style="width: 2.75rem; height: 2.75rem; font-size: 1.15rem; font-weight: 800; border-radius: var(--radius-lg);">
+                      U
+                    </div>
+                    <div>
+                      <p id="prev-name" style="font-size: 0.9375rem; font-weight: 800; color: #ffffff;">اسم المستخدم</p>
+                      <p id="prev-role" style="font-size: 0.75rem; color: var(--primary-200);">عضو في المنصة</p>
+                    </div>
+                  </div>
+                  <p id="prev-company" style="font-size: 0.75rem; color: var(--slate-300); margin-bottom: 0.5rem;"></p>
+                  <p id="prev-bio" style="font-size: 0.75rem; color: var(--slate-300); font-style: italic; line-height: 1.5;"></p>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- 2. Overview Sub-View -->
+          <div id="dash-view-overview" class="dash-content-grid dash-sub-view" style="display: none;">
+            <div class="dash-card">
+              <div class="dash-card-header">
+                <h3 style="font-size: 1rem; font-weight: 700; color: var(--slate-900);" data-i18n="accountInfo">معلومات الحساب</h3>
+              </div>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; font-size: 0.8125rem;">
+                <div style="padding: 0.85rem; background: var(--slate-50); border-radius: var(--radius-lg);">
+                  <span style="color: var(--slate-500); display: block; font-size: 0.75rem;">الاسم الكامل:</span>
+                  <strong id="dash-info-name" style="color: var(--slate-900);">User</strong>
+                </div>
+                <div style="padding: 0.85rem; background: var(--slate-50); border-radius: var(--radius-lg);">
+                  <span style="color: var(--slate-500); display: block; font-size: 0.75rem;">البريد الإلكتروني:</span>
+                  <strong id="dash-info-email" style="color: var(--slate-900);">email</strong>
+                </div>
+                <div style="padding: 0.85rem; background: var(--slate-50); border-radius: var(--radius-lg);">
+                  <span style="color: var(--slate-500); display: block; font-size: 0.75rem;">المسمى المهني:</span>
+                  <strong id="dash-info-role" style="color: var(--slate-900);">Role</strong>
+                </div>
+                <div style="padding: 0.85rem; background: var(--slate-50); border-radius: var(--radius-lg);">
+                  <span style="color: var(--slate-500); display: block; font-size: 0.75rem;">المؤسسة:</span>
+                  <strong id="dash-info-company" style="color: var(--slate-900);">Company</strong>
+                </div>
+              </div>
+              <div style="margin-top: 1rem; padding: 0.85rem; background: var(--slate-50); border-radius: var(--radius-lg); font-size: 0.8125rem;">
+                <span style="color: var(--slate-500); display: block; font-size: 0.75rem;">النبذة الشخصية:</span>
+                <p id="dash-info-bio" style="color: var(--slate-700); margin-top: 0.25rem;">Bio</p>
+              </div>
+            </div>
+
+            <div>
+              <div class="dash-card">
+                <div class="dash-card-header">
+                  <h4 style="font-size: 0.8125rem; font-weight: 700; color: var(--slate-800);">سجل النشاط</h4>
+                </div>
+                <div style="font-size: 0.75rem; color: var(--slate-600); display: flex; flex-direction: column; gap: 0.75rem;">
+                  <div style="display: flex; justify-content: space-between; padding-bottom: 0.5rem; border-bottom: 1px solid var(--slate-100);">
+                    <span>تاريخ الانضمام:</span>
+                    <strong id="dash-info-created" style="font-family: monospace;">2025-11-12</strong>
+                  </div>
+                  <div style="display: flex; justify-content: space-between;">
+                    <span>آخر تسجيل دخول:</span>
+                    <strong id="dash-info-lastlogin" style="font-family: monospace;">2026-09-25</strong>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 3. Security Sub-View -->
+          <div id="dash-view-security" class="dash-content-grid dash-sub-view" style="display: none;">
+            <div class="dash-card">
+              <div class="dash-card-header">
+                <h3 style="font-size: 1rem; font-weight: 700; color: var(--slate-900);">حالة الأمان والحساب</h3>
+              </div>
+              <div style="padding: 1rem; background: var(--emerald-50); border: 1px solid var(--emerald-100); border-radius: var(--radius-xl); margin-bottom: 1rem;">
+                <div style="display: flex; align-items: center; gap: 0.5rem; color: var(--emerald-700); font-weight: 700; font-size: 0.875rem; margin-bottom: 0.35rem;">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                  <span>محمي ومفعّل بالكامل</span>
+                </div>
+                <p style="font-size: 0.75rem; color: var(--emerald-700);">
+                  جلسة متصفحك محمية ومشفرة وفق أعلى معايير أمان الويب الحديثة، مع سياسات أمان مشددة على مستوى السجلات.
+                </p>
+              </div>
+              <div style="font-size: 0.8125rem; color: var(--slate-600); line-height: 1.7;">
+                يتم التحقق من صحة الجلسة تلقائياً وتجديد رموز المصادقة دون أي مقاطعة لعملك.
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Forgot Password Modal -->
+  <div id="forgot-modal" class="modal-overlay" style="display: none;">
+    <div class="modal-box">
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem;">
+        <h3 style="font-size: 1.05rem; font-weight: 700; color: var(--slate-900);">استعادة كلمة المرور</h3>
+        <button type="button" onclick="closeForgotModal()" style="color: var(--slate-400); font-size: 1.25rem;">✕</button>
+      </div>
+      <p style="font-size: 0.75rem; color: var(--slate-600); margin-bottom: 1.25rem; line-height: 1.6;">
+        أدخل بريدك الإلكتروني المسجل وسنقوم بإرسال رابط إعادة تعيين كلمة المرور إليك مباشرة.
+      </p>
+      <div id="forgot-alert" class="alert-box alert-success" style="display: none;">
+        تم إرسال تعليمات الاستعادة إلى بريدك بنجاح!
+      </div>
+      <form id="forgot-form" onsubmit="handleForgotSubmit(event)">
+        <div class="form-group">
+          <input type="email" id="forgot-email" class="form-input" placeholder="name@example.com" required style="padding-inline-start: 1rem;">
+        </div>
+        <button type="submit" class="btn btn-primary btn-full" style="padding: 0.65rem;">إرسال رابط الاستعادة</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        
+        <!-- Brand Summary -->
+        <div>
+          <div class="brand-logo" style="margin-bottom: 1rem;">
+            <div class="brand-emblem">
+              <div class="brand-emblem-inner">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3.5" fill="#818cf8"/></svg>
+              </div>
+            </div>
+            <div class="brand-text">
+              <span class="brand-name" style="color: #ffffff;">نوفا سفير</span>
+            </div>
+          </div>
+          <p style="font-size: 0.8125rem; line-height: 1.7; color: var(--slate-400); margin-bottom: 1.25rem;" data-i18n="footerDesc">
+            المنصة الرائدة لخدمات الويب الرقمية. سرعة، أمان، وأناقة في التصميم لبناء أفضل تجربة مستخدم ممكنة.
+          </p>
+
+          <!-- Newsletter Form -->
+          <div>
+            <p style="font-size: 0.75rem; font-weight: 700; color: var(--slate-200); margin-bottom: 0.25rem;">النشرة البريدية</p>
+            <div id="newsletter-alert" class="alert-box alert-success" style="display: none; padding: 0.5rem 0.75rem;">
+              شكراً لاشتراكك! سنتواصل معك بأحدث الأخبار.
+            </div>
+            <form id="newsletter-form" class="newsletter-form">
+              <input type="email" id="newsletter-email" class="newsletter-input" placeholder="name@example.com" required>
+              <button type="submit" class="btn btn-primary" style="padding: 0.45rem 1rem; font-size: 0.75rem;">اشتراك</button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Links Col 1: Product -->
+        <div>
+          <h4 class="footer-col-title">المنتج</h4>
+          <ul class="footer-links-list">
+            <li><a href="#features" class="footer-link" data-i18n="navFeatures">المميزات</a></li>
+            <li><a href="#demo" class="footer-link" data-i18n="navServices">الخدمات</a></li>
+            <li><a href="#register" class="footer-link" data-i18n="navSignUp">إنشاء حساب</a></li>
+            <li><a href="#login" class="footer-link" data-i18n="navSignIn">تسجيل الدخول</a></li>
+          </ul>
+        </div>
+
+        <!-- Links Col 2: Company -->
+        <div>
+          <h4 class="footer-col-title">الشركة</h4>
+          <ul class="footer-links-list">
+            <li><a href="#about" class="footer-link" data-i18n="navAbout">عن المنصة</a></li>
+            <li><a href="#faq" class="footer-link" data-i18n="navFaq">الأسئلة الشائعة</a></li>
+            <li><a href="#hero" class="footer-link">فريق العمل</a></li>
+            <li><a href="#hero" class="footer-link">الوظائف</a></li>
+          </ul>
+        </div>
+
+        <!-- Links Col 3: Legal -->
+        <div>
+          <h4 class="footer-col-title">القانونية</h4>
+          <ul class="footer-links-list">
+            <li><a href="#hero" class="footer-link">سياسة الخصوصية</a></li>
+            <li><a href="#hero" class="footer-link">شروط الاستخدام</a></li>
+            <li><a href="#hero" class="footer-link">معايير الأمان</a></li>
+            <li><a href="#hero" class="footer-link">ملفات تعريف الارتباط</a></li>
+          </ul>
+        </div>
+
+      </div>
+
+      <!-- Bottom Bar -->
+      <div class="footer-bottom">
+        <p data-i18n="footerRights">جميع الحقوق محفوظة لمنصة نوفا سفير © 2026</p>
+        <div class="social-links">
+          <a href="https://github.com" target="_blank" rel="noreferrer" class="social-link" aria-label="GitHub">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+          </a>
+          <a href="https://twitter.com" target="_blank" rel="noreferrer" class="social-link" aria-label="Twitter">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/></svg>
+          </a>
+          <a href="https://linkedin.com" target="_blank" rel="noreferrer" class="social-link" aria-label="LinkedIn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Modal Helpers Script -->
+  <script>
+    function openForgotModal() {
+      var modal = document.getElementById('forgot-modal');
+      if (modal) modal.style.display = 'flex';
+    }
+    function closeForgotModal() {
+      var modal = document.getElementById('forgot-modal');
+      if (modal) modal.style.display = 'none';
+      var alert = document.getElementById('forgot-alert');
+      if (alert) alert.style.display = 'none';
+    }
+    function handleForgotSubmit(e) {
+      e.preventDefault();
+      var alert = document.getElementById('forgot-alert');
+      var form = document.getElementById('forgot-form');
+      if (alert && form) {
+        alert.style.display = 'flex';
+        setTimeout(function() {
+          closeForgotModal();
+          alert.style.display = 'none';
+        }, 2000);
+      }
+    }
+  </script>
+
+  <!-- Supabase Official JS SDK from CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <!-- Main Website Script (Pure Vanilla JS, Relative path for GitHub Pages) -->
+  <script src="./script.js"></script>
+
+</body>
+</html>
