@@ -297,6 +297,7 @@ function navigateTo(pageId, anchor) {
 
 function handleHashChange() {
   var hash = window.location.hash.replace('#', '').toLowerCase();
+  updateBottomTabActive(hash);
   var anchors = ['features', 'demo', 'about', 'faq', 'hero'];
   if (anchors.indexOf(hash) !== -1) {
     navigateTo('home', hash);
@@ -764,6 +765,17 @@ function updateAuthUI() {
   var dropName = document.getElementById('dropdown-user-name');
   var dropEmail = document.getElementById('dropdown-user-email');
 
+  // Mobile Drawer elements
+  var mobileGuest = document.getElementById('mobile-guest-actions');
+  var mobileUser = document.getElementById('mobile-user-actions');
+  var mobileAvatar = document.getElementById('mobile-user-avatar');
+  var mobileName = document.getElementById('mobile-user-name');
+  var mobileEmail = document.getElementById('mobile-user-email');
+
+  // Mobile Bottom Bar tabs
+  var bottomLogin = document.getElementById('bottom-tab-login');
+  var bottomDash = document.getElementById('bottom-tab-dashboard');
+
   if (currentUser) {
     if (guestActions) guestActions.style.display = 'none';
     if (userMenu) userMenu.style.display = 'block';
@@ -771,10 +783,39 @@ function updateAuthUI() {
     if (userName) userName.innerText = currentUser.name || 'User';
     if (dropName) dropName.innerText = currentUser.name || 'User';
     if (dropEmail) dropEmail.innerText = currentUser.email || '';
+
+    if (mobileGuest) mobileGuest.style.display = 'none';
+    if (mobileUser) mobileUser.style.display = 'flex';
+    if (mobileAvatar) mobileAvatar.innerText = (currentUser.name || 'U').charAt(0).toUpperCase();
+    if (mobileName) mobileName.innerText = currentUser.name || 'User';
+    if (mobileEmail) mobileEmail.innerText = currentUser.email || '';
+
+    if (bottomLogin) bottomLogin.style.display = 'none';
+    if (bottomDash) bottomDash.style.display = 'flex';
   } else {
     if (guestActions) guestActions.style.display = 'flex';
     if (userMenu) userMenu.style.display = 'none';
+
+    if (mobileGuest) mobileGuest.style.display = 'flex';
+    if (mobileUser) mobileUser.style.display = 'none';
+
+    if (bottomLogin) bottomLogin.style.display = 'flex';
+    if (bottomDash) bottomDash.style.display = 'none';
   }
+}
+
+function updateBottomTabActive(hash) {
+  var cleanHash = (hash || '').replace('#', '').toLowerCase();
+  if (!cleanHash) cleanHash = 'home';
+  var bottomTabs = document.querySelectorAll('.mobile-bottom-tab');
+  bottomTabs.forEach(function (tab) {
+    var target = tab.getAttribute('data-tab-target');
+    if (target && target === cleanHash) {
+      tab.classList.add('active');
+    } else {
+      tab.classList.remove('active');
+    }
+  });
 }
 
 function closeDropdowns() {
@@ -927,13 +968,48 @@ function setupInteractiveWidgets() {
     });
   }
 
-  // Mobile menu toggle
+  // Mobile menu toggle & drawer handling
   var mobileToggle = document.getElementById('mobile-menu-toggle');
   var mobileDrawer = document.getElementById('mobile-drawer');
+  var drawerClose = document.getElementById('mobile-drawer-close');
+  var bottomMenuBtn = document.getElementById('bottom-tab-menu');
+
   if (mobileToggle && mobileDrawer) {
     mobileToggle.addEventListener('click', function (e) {
       e.stopPropagation();
       mobileDrawer.classList.toggle('open');
+    });
+  }
+
+  if (bottomMenuBtn && mobileDrawer) {
+    bottomMenuBtn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      mobileDrawer.classList.toggle('open');
+      if (mobileDrawer.classList.contains('open')) {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    });
+  }
+
+  if (drawerClose && mobileDrawer) {
+    drawerClose.addEventListener('click', function (e) {
+      e.stopPropagation();
+      mobileDrawer.classList.remove('open');
+    });
+  }
+
+  if (mobileDrawer) {
+    mobileDrawer.addEventListener('click', function (e) {
+      e.stopPropagation();
+    });
+
+    var drawerLinks = mobileDrawer.querySelectorAll('a, button');
+    drawerLinks.forEach(function (link) {
+      if (link.id !== 'mobile-drawer-close') {
+        link.addEventListener('click', function () {
+          closeDropdowns();
+        });
+      }
     });
   }
 
